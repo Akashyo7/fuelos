@@ -1,4 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FuelOS
+
+> Mobile-first protein recommendation and logging app (Next.js + Supabase)
+
+Summary
+- Onboard to set protein target
+- Get meal recommendations that fill your remaining protein gap
+- Log meals and track daily/weekly progress
+- Supabase for auth and persistence
+
+Quick start (local)
+
+1. Install dependencies
+
+```bash
+npm install
+```
+
+2. Create `.env.local` in the project root and set these values (from your Supabase project):
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+3. Ensure your Supabase project's Authentication > Settings includes the redirect URL:
+
+```
+http://localhost:3000/auth/callback
+```
+
+4. Run dev server
+
+```bash
+npm run dev
+# open http://localhost:3000
+```
+
+Why sign-in may fail
+- Missing or incorrect `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local`.
+- Supabase Authentication redirect URL not configured to `http://localhost:3000/auth/callback`.
+- Supabase email sending not configured (SMTP) so magic links are not delivered.
+- The app previously expected an OAuth `code` on the server callback; email magic links return session tokens in the URL fragment. To fix this we added a client-side callback page that correctly parses the session from the URL.
+
+What I changed to help
+- Added `app/auth/callback/page.tsx` (client) to finish sign-in after following magic links.
+- Updated README with setup and troubleshooting steps.
+
+Next steps (suggested)
+- Add `SUPABASE_SERVICE_ROLE_KEY` to Vercel Secrets if you need server-side privileged actions.
+- Configure SMTP in Supabase project settings to enable email delivery for magic links.
+- Deploy to Vercel and add environment variables there.
+
+License
+- MITThis is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
