@@ -53,6 +53,14 @@ export default function AuthCallback() {
           return
         }
 
+        const errorCode = searchParams.get('error')
+        const errorDescription = searchParams.get('error_description')
+        if (errorCode) {
+          setStatus('Sign-in link returned an error.')
+          setDetails(`Error: ${errorCode}\nDescription: ${errorDescription || 'No details'}\nURL: ${window.location.href}`)
+          return
+        }
+
         setStatus('Sign-in link did not return a valid token.')
         setDetails(`URL: ${window.location.href}`)
       } catch (err) {
