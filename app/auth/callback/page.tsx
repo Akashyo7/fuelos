@@ -39,6 +39,17 @@ export default function AuthCallback() {
         }
 
         const searchParams = new URLSearchParams(window.location.search)
+        // If Supabase returned an OAuth `code` (server-side exchange), forward
+        // the browser to our server exchange endpoint which will perform the
+        // `exchangeCodeForSession` and redirect the user.
+        if (searchParams.get('code')) {
+          setStatus('Exchanging server code...')
+          // Preserve the full query string when forwarding to the API route
+          const qs = window.location.search.substring(1)
+          window.location.href = `/api/auth/callback?${qs}`
+          return
+        }
+
         if (searchParams.get('access_token')) {
           const at = searchParams.get('access_token')!
           const rt = searchParams.get('refresh_token') || undefined
